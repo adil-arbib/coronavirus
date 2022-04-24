@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CoronaVirus">
         <activity
+            android:name=".CountryDetails"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity

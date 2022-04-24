@@ -1,45 +1,40 @@
 package com.dajdad.coronavirus;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.github.ybq.android.spinkit.SpinKitView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class Country extends Fragment {
+public class Country extends Fragment implements recycelerViewInterface{
     private RecyclerView recyclerView;
     private ArrayList<CovidCountry> covidCountries;
     private View view;
     private static final String TAG = Country.class.getSimpleName();
     private EditText edt_search;
-    private ArrayList<CovidCountry> tmpArray;
     private CovidCountryAdapter adapter;
 
 
@@ -69,7 +64,7 @@ public class Country extends Fragment {
                     adapter.getFilter().filter(input);
                 }
                 else{
-                    adapter = new CovidCountryAdapter(covidCountries);
+                    adapter = new CovidCountryAdapter(covidCountries, Country.this);
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -84,7 +79,7 @@ public class Country extends Fragment {
     }
 
     private void showRecyclerView(ArrayList<CovidCountry> arrayList){
-        adapter = new CovidCountryAdapter(arrayList);
+        adapter = new CovidCountryAdapter(arrayList, this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -102,7 +97,8 @@ public class Country extends Fragment {
                                 JSONArray jsonArray = new JSONArray(response);
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    covidCountries.add(new CovidCountry(jsonObject.getString("country"), jsonObject.getString("cases")));
+                                    covidCountries.add(new CovidCountry(jsonObject.getString("country"), jsonObject.getString("cases"),
+                                            jsonObject.getString("recovered"), jsonObject.getString("deaths")));
                                 }
                                 showRecyclerView(covidCountries);
 
@@ -122,4 +118,14 @@ public class Country extends Fragment {
     }
 
 
+    @Override
+    public void onItemClick(int position) {
+        Intent intent = new Intent(getActivity(), CountryDetails.class);
+        intent.putExtra("country",covidCountries.get(position).getmCovidCountry());
+        intent.putExtra("confirmed", covidCountries.get(position).getmCases());
+        intent.putExtra("recovered", covidCountries.get(position).getmRecovered());
+        intent.putExtra("deaths", covidCountries.get(position).getmDeaths());
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
 }

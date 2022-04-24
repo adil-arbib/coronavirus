@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
@@ -13,15 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapter.ViewHolder> implements Filterable {
     private ArrayList<CovidCountry> covidCountries;
     private ArrayList<CovidCountry> tmpArrayList;
+    private final recycelerViewInterface rcView;
 
-    public CovidCountryAdapter(ArrayList covidCountries){
+    public CovidCountryAdapter(ArrayList covidCountries, recycelerViewInterface rcView){
         this.covidCountries = new ArrayList<>(covidCountries);
         tmpArrayList = new ArrayList<>(covidCountries);
+        this.rcView = rcView;
     }
 
     @NonNull
@@ -30,7 +30,7 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_covid_country,parent,false);
 
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, rcView);
     }
 
     @Override
@@ -77,12 +77,24 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
         }
     };
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView total_cases, country_name;
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, recycelerViewInterface rcView) {
             super(itemView);
             total_cases = itemView.findViewById(R.id.txt_total_cases);
             country_name = itemView.findViewById(R.id.txt_country_name);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(rcView != null){
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            rcView.onItemClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 

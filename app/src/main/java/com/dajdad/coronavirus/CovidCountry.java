@@ -7,11 +7,13 @@ public class CovidCountry {
     public CovidCountry(String mCovidCountry, String mCases) {
         this.mCovidCountry = mCovidCountry;
         this.mCases = mCases;
-        this.mTodayCases = mTodayCases;
+    }
+
+    public CovidCountry(String mCovidCountry, String mCases, String mRecovered, String mDeaths) {
+        this.mCovidCountry = mCovidCountry;
+        this.mCases = mCases;
         this.mRecovered = mRecovered;
-        this.mCritical = mCritical;
         this.mDeaths = mDeaths;
-        this.mTodayDeaths = mTodayDeaths;
     }
 
     public String getmCovidCountry() {
@@ -20,5 +22,13 @@ public class CovidCountry {
 
     public String getmCases() {
         return mCases;
+    }
+
+    public String getmRecovered() {
+        return mRecovered;
+    }
+
+    public String getmDeaths() {
+        return mDeaths;
     }
 }
