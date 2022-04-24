@@ -7,6 +7,7 @@
     android:background="@color/primary_background"
     tools:context=".Country">
 
+
     <EditText
         android:id="@+id/search_country"
         android:layout_width="match_parent"
@@ -16,14 +17,49 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:hint="Search country..."
         android:paddingStart="15dp"
+        android:layout_marginTop="10dp"
         android:textColorHint="@color/text_grey"
         android:inputType="text"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
         android:background="@drawable/search_input"
         android:textColor="@color/black"
         android:layout_marginEnd="16dp"
-        app:layout_constraintBottom_toTopOf="@id/rvCountry"/>
+        app:layout_constraintBottom_toTopOf="@id/icons"/>
+
+    <LinearLayout
+        android:id="@+id/icons"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_country"
+        app:layout_constraintBottom_toTopOf="@+id/rvCountry"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/sortByName"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:layout_marginEnd="10dp"
+            />
+        <ImageView
+            android:id="@+id/sortByCount"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingTop="9dp"
+            android:paddingBottom="9dp"
+            android:layout_marginEnd="10dp"
+            />
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCountry"
@@ -31,7 +67,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_country"
+        app:layout_constraintTop_toBottomOf="@+id/icons"
         android:layout_marginTop="10dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp"

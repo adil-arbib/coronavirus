@@ -2,8 +2,10 @@ package com.dajdad.coronavirus;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,10 +31,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Country extends Fragment implements recycelerViewInterface{
+public class Country extends Fragment implements recycelerViewInterface, View.OnClickListener{
     private RecyclerView recyclerView;
     private ArrayList<CovidCountry> covidCountries;
     private View view;
@@ -39,7 +44,8 @@ public class Country extends Fragment implements recycelerViewInterface{
     private EditText edt_search;
     private CovidCountryAdapter adapter;
     private ArrayList<CovidCountry> tmpArray;
-    private boolean using_array1 = true;
+    private boolean using_array1 = true, boolean_byName = true;
+    private ImageView icon_sortByName, icon_sortByCount;
 
 
     @SuppressLint("ResourceType")
@@ -51,7 +57,18 @@ public class Country extends Fragment implements recycelerViewInterface{
         recyclerView = view.findViewById(R.id.rvCountry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         edt_search = view.findViewById(R.id.search_country);
+        icon_sortByName = view.findViewById(R.id.sortByName);
+        icon_sortByCount = view.findViewById(R.id.sortByCount);
         tmpArray = new ArrayList<>();
+
+        icon_sortByCount.setOnClickListener(this);
+        icon_sortByName.setOnClickListener(this);
+
+        icon_sortByName.setImageResource(R.drawable.a_z_white);
+        icon_sortByName.setBackgroundResource(R.drawable.icon_selected_bg);
+        icon_sortByCount.setImageResource(R.drawable.one_nine_black);
+        icon_sortByCount.setBackgroundResource(R.drawable.search_input);
+
 
         getDateFromServer();
 
@@ -67,7 +84,7 @@ public class Country extends Fragment implements recycelerViewInterface{
                 String input = edt_search.getText().toString();
                 if(!input.equals("")){
                     searchedCountries();
-                    adapter = new CovidCountryAdapter(tmpArray, Country.this);
+                    adapter = new CovidCountryAdapter(boolean_byName ? tmpArray : sortByCount(tmpArray), Country.this);
                     using_array1 = false;
                 }
                 else{
@@ -149,5 +166,44 @@ public class Country extends Fragment implements recycelerViewInterface{
         intent.putExtra("confirmed", arrayList.get(position).getmCases());
         intent.putExtra("recovered", arrayList.get(position).getmRecovered());
         intent.putExtra("deaths", arrayList.get(position).getmDeaths());
+    }
+
+    private ArrayList<CovidCountry> sortByCount(ArrayList<CovidCountry> arrayList){
+        ArrayList<CovidCountry> tmp = new ArrayList<>(arrayList);
+        for(int i=0; i<tmp.size(); i++){
+            for(int j=0; j<tmp.size()-1; j++){
+                int a = Integer.parseInt(tmp.get(j).getmCases());
+                int b = Integer.parseInt(tmp.get(j+1).getmCases());
+                if(a < b){
+                    Collections.swap(tmp, j,j+1);
+                }
+            }
+        }
+        return tmp;
+    }
+
+    @SuppressLint("ResourceAsColor")
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.sortByName:
+                adapter = new CovidCountryAdapter(using_array1 ? covidCountries:tmpArray, Country.this);
+                icon_sortByName.setBackgroundResource(R.drawable.icon_selected_bg);
+                icon_sortByName.setImageResource(R.drawable.a_z_white);
+                icon_sortByCount.setBackgroundResource(R.drawable.search_input);
+                icon_sortByCount.setImageResource(R.drawable.one_nine_black);
+                boolean_byName = true;
+
+                break;
+            case R.id.sortByCount:
+                adapter = new CovidCountryAdapter(using_array1 ? sortByCount(covidCountries):sortByCount(tmpArray), Country.this);
+                icon_sortByName.setBackgroundResource(R.drawable.search_input);
+                icon_sortByName.setImageResource(R.drawable.a_z_black);
+                icon_sortByCount.setBackgroundResource(R.drawable.icon_selected_bg);
+                icon_sortByCount.setImageResource(R.drawable.one_nine_white);
+                boolean_byName = false;
+                break;
+        }
+        recyclerView.setAdapter(adapter);
     }
 }
