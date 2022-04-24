@@ -10,11 +10,13 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +29,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.ReferenceQueue;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class Home extends Fragment {
@@ -35,6 +39,8 @@ public class Home extends Fragment {
     private TextView txt_recovered;
     private TextView txt_deaths;
     private Dialog dialog;
+    private ViewGroup toastLayout;
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,9 +50,9 @@ public class Home extends Fragment {
         txt_confirmed = view.findViewById(R.id.txt_confirmed);
         txt_recovered = view.findViewById(R.id.txt_recovered);
         txt_deaths = view.findViewById(R.id.txt_deaths);
+        toastLayout = (ViewGroup) view.findViewById(R.layout.toast_layout);
 
         getData();
-
 
 
         return view;
@@ -64,6 +70,8 @@ public class Home extends Fragment {
                             String cases = jsonObject.getString("cases");
                             String recovered = jsonObject.getString("recovered");
                             String deaths = jsonObject.getString("deaths");
+                            long last_update = jsonObject.getLong("updated");
+                            showToast(formatDate(last_update));
                             startCountAnimation(txt_confirmed, Integer.parseInt(cases));
                             startCountAnimation(txt_recovered, Integer.parseInt(recovered));
                             startCountAnimation(txt_deaths, Integer.parseInt(deaths));
@@ -98,6 +106,27 @@ public class Home extends Fragment {
             }
         });
         animator.start();
+    }
+
+    private String formatDate(long date){
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MM yyyy hh:mm:ss aaa");
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date);
+        return formatter.format(calendar.getTime());
+    }
+
+    public void showToast(String date){
+
+
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.toast_layout,  toastLayout);
+        TextView txt_update = view.findViewById(R.id.txt_update);
+        txt_update.setText("Last update : "+date);
+        Toast toast = new Toast(getContext());
+        toast.setGravity(Gravity.TOP|Gravity.RIGHT, 0, 220);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(view);
+        toast.show();
     }
 
 

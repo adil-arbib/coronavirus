@@ -1,5 +1,6 @@
 package com.dajdad.coronavirus;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,11 +8,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -32,7 +38,12 @@ public class Country extends Fragment {
     private ArrayList<CovidCountry> covidCountries;
     private View view;
     private static final String TAG = Country.class.getSimpleName();
+    private EditText edt_search;
+    private ArrayList<CovidCountry> tmpArray;
+    private CovidCountryAdapter adapter;
 
+
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,14 +51,40 @@ public class Country extends Fragment {
         view = inflater.inflate(R.layout.fragment_country, container, false);
         recyclerView = view.findViewById(R.id.rvCountry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        edt_search = view.findViewById(R.id.search_country);
 
         getDateFromServer();
+
+
+        edt_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String input = edt_search.getText().toString();
+                if(!input.equals("")){
+                    adapter.getFilter().filter(input);
+                }
+                else{
+                    adapter = new CovidCountryAdapter(covidCountries);
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
         return view;
     }
 
-    private void showRecyclerView(){
-        CovidCountryAdapter adapter = new CovidCountryAdapter(covidCountries);
+    private void showRecyclerView(ArrayList<CovidCountry> arrayList){
+        adapter = new CovidCountryAdapter(arrayList);
         recyclerView.setAdapter(adapter);
     }
 
@@ -67,7 +104,7 @@ public class Country extends Fragment {
                                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                                     covidCountries.add(new CovidCountry(jsonObject.getString("country"), jsonObject.getString("cases")));
                                 }
-                                showRecyclerView();
+                                showRecyclerView(covidCountries);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -83,5 +120,6 @@ public class Country extends Fragment {
         Volley.newRequestQueue(getActivity()).add(stringRequest);
 
     }
+
 
 }

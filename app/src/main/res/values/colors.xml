@@ -11,8 +11,11 @@
     <color name="primary_blue">#4C9AED</color>
     <color name="primary_red">#EF6960</color>
     <color name="primary_green">#56CD82</color>
-    <color name="text_grey">#818181</color>
+    <color name="text_grey">#817c9b</color>
     <color name="primary_background">#fff</color>
     <color name="light_grey">#CBCBCB</color>
     <color name="fragment_bg">#f9fcff</color>
+    <color name="search_bar">#f0f3f7</color>
+    <color name="toast_color">#ff8b00</color>
+    <color name="toast_bg">#FFEAAB</color>
 </resources>
