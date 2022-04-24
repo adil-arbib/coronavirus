@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Objects;
 
 public class Country extends Fragment implements recycelerViewInterface{
@@ -36,6 +38,8 @@ public class Country extends Fragment implements recycelerViewInterface{
     private static final String TAG = Country.class.getSimpleName();
     private EditText edt_search;
     private CovidCountryAdapter adapter;
+    private ArrayList<CovidCountry> tmpArray;
+    private boolean using_array1 = true;
 
 
     @SuppressLint("ResourceType")
@@ -47,6 +51,7 @@ public class Country extends Fragment implements recycelerViewInterface{
         recyclerView = view.findViewById(R.id.rvCountry);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         edt_search = view.findViewById(R.id.search_country);
+        tmpArray = new ArrayList<>();
 
         getDateFromServer();
 
@@ -61,12 +66,15 @@ public class Country extends Fragment implements recycelerViewInterface{
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String input = edt_search.getText().toString();
                 if(!input.equals("")){
-                    adapter.getFilter().filter(input);
+                    searchedCountries();
+                    adapter = new CovidCountryAdapter(tmpArray, Country.this);
+                    using_array1 = false;
                 }
                 else{
                     adapter = new CovidCountryAdapter(covidCountries, Country.this);
-                    recyclerView.setAdapter(adapter);
+                    using_array1 = true;
                 }
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -76,6 +84,16 @@ public class Country extends Fragment implements recycelerViewInterface{
         });
 
         return view;
+    }
+
+    private void searchedCountries(){
+        tmpArray.clear();
+        String input = edt_search.getText().toString().toLowerCase().trim();
+        for(CovidCountry item : covidCountries){
+            if(item.getmCovidCountry().toLowerCase().startsWith(input)){
+                tmpArray.add(item);
+            }
+        }
     }
 
     private void showRecyclerView(ArrayList<CovidCountry> arrayList){
@@ -121,11 +139,15 @@ public class Country extends Fragment implements recycelerViewInterface{
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getActivity(), CountryDetails.class);
-        intent.putExtra("country",covidCountries.get(position).getmCovidCountry());
-        intent.putExtra("confirmed", covidCountries.get(position).getmCases());
-        intent.putExtra("recovered", covidCountries.get(position).getmRecovered());
-        intent.putExtra("deaths", covidCountries.get(position).getmDeaths());
+        putData(intent,using_array1 ? covidCountries : tmpArray, position);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
+
+    private void putData(Intent intent, ArrayList<CovidCountry> arrayList, int position){
+        intent.putExtra("country",arrayList.get(position).getmCovidCountry());
+        intent.putExtra("confirmed", arrayList.get(position).getmCases());
+        intent.putExtra("recovered", arrayList.get(position).getmRecovered());
+        intent.putExtra("deaths", arrayList.get(position).getmDeaths());
     }
 }

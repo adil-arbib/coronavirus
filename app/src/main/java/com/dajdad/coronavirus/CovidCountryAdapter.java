@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapter.ViewHolder> implements Filterable {
+public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapter.ViewHolder> {
     private ArrayList<CovidCountry> covidCountries;
     private ArrayList<CovidCountry> tmpArrayList;
     private final recycelerViewInterface rcView;
@@ -28,7 +28,6 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
     @Override
     public CovidCountryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list_covid_country,parent,false);
-
 
         return new ViewHolder(view, rcView);
     }
@@ -45,37 +44,7 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
         return covidCountries.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return tmpFilter;
-    }
 
-    private Filter tmpFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence charSequence) {
-            ArrayList<CovidCountry> filteredList = new ArrayList<>();
-            if(charSequence==null || charSequence.length()==0){
-                filteredList.addAll(tmpArrayList);
-            }else{
-                String filterPattern = charSequence.toString().toLowerCase().trim();
-                for(CovidCountry item : tmpArrayList){
-                    if(item.getmCovidCountry().toLowerCase().startsWith(filterPattern)){
-                        filteredList.add(item);
-                    }
-                }
-            }
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-            covidCountries.clear();
-            covidCountries.addAll((ArrayList)filterResults.values);
-            notifyDataSetChanged();
-        }
-    };
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView total_cases, country_name;
