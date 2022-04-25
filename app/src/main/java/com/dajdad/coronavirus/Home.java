@@ -10,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -95,18 +96,33 @@ public class Home extends Fragment {
         requestQueue.add(stringRequest);
     }
 
-
+    private static String matches(String str){
+        long n = Long.parseLong(str);
+        int m = (int) n/1000000;
+        int k = (int) (n%1000000)/1000;
+        int r = (int) n%1000;
+        String rf;
+        if(r>99)
+            rf = String.valueOf(r);
+        else if(r>9)
+            rf = "0" + r;
+        else rf = "00" +r;
+        if(m==0)
+            return (k!=0 ? k+".":"") + rf;
+        return m+"."+(k!=0 ? k+".":"000") + rf;
+    }
 
     private void startCountAnimation(TextView textView, int count) {
-        ValueAnimator animator = ValueAnimator.ofInt(0, count); //0 is min number, 600 is max number
+        ValueAnimator animator = ValueAnimator.ofInt(0, count); //0 is min number, count is max number
         animator.setDuration(1500); //Duration is in milliseconds
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
-                textView.setText(animation.getAnimatedValue().toString());
+                textView.setText(matches(animation.getAnimatedValue().toString()));
             }
         });
         animator.start();
     }
+
 
     private String formatDate(long date){
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MM yyyy hh:mm:ss aaa");
@@ -116,8 +132,6 @@ public class Home extends Fragment {
     }
 
     public void showToast(String date){
-
-
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.toast_layout,  toastLayout);
         TextView txt_update = view.findViewById(R.id.txt_update);

@@ -80,9 +80,6 @@ public class Loading extends AppCompatActivity {
         }, TIME_OUT);
 
 
-
-
-
     }
     private boolean checkConnection(){
         ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);

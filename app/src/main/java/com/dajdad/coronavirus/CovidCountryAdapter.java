@@ -36,7 +36,7 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
     public void onBindViewHolder(@NonNull CovidCountryAdapter.ViewHolder holder, int position) {
         CovidCountry covidCountry = covidCountries.get(position);
         holder.country_name.setText(covidCountry.getmCovidCountry());
-        startCountAnimation(holder.total_cases, Integer.parseInt(covidCountry.getmCases()));
+        startCountAnimation(holder.total_cases, covidCountry.getmCases());
     }
 
     @Override
@@ -67,14 +67,24 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
         }
     }
 
-    private void startCountAnimation(TextView textView, int count) {
-        ValueAnimator animator = ValueAnimator.ofInt(0, count); //0 is min number, 600 is max number
+    private void startCountAnimation(TextView textView, String count) {
+        ValueAnimator animator = ValueAnimator.ofInt(0, Integer.parseInt(count)); //0 is min number, 600 is max number
         animator.setDuration(1000); //Duration is in milliseconds
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
-                textView.setText(animation.getAnimatedValue().toString());
+                textView.setText(formattingNumber(animation.getAnimatedValue().toString()));
             }
         });
         animator.start();
     }
+
+    private static String formattingNumber(String number){
+        long n = Long.parseLong(number);
+        if(n/1000000 > 0)
+            return String.format("%.2f m", (float)n/1000000);
+        else if(n/1000 > 0)
+            return String.format("%.2f k",(float)n/1000);
+        else return number;
+    }
+
 }
