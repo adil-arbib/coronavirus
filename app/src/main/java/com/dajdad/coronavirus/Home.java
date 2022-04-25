@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,11 +37,10 @@ import java.util.Calendar;
 
 public class Home extends Fragment {
     private View view;
-    private TextView txt_confirmed;
-    private TextView txt_recovered;
-    private TextView txt_deaths;
+    private TextView txt_confirmed, txt_recovered, txt_deaths, txt_percentage, txt_cal_recovered;
     private Dialog dialog;
     private ViewGroup toastLayout;
+    private ProgressBar progressBar;
     @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,6 +52,9 @@ public class Home extends Fragment {
         txt_recovered = view.findViewById(R.id.txt_recovered);
         txt_deaths = view.findViewById(R.id.txt_deaths);
         toastLayout = (ViewGroup) view.findViewById(R.layout.toast_layout);
+        progressBar = view.findViewById(R.id.progressBar);
+        txt_percentage = view.findViewById(R.id.txt_percentage);
+        txt_cal_recovered = view.findViewById(R.id.prgCases);
 
         getData();
 
@@ -64,6 +67,7 @@ public class Home extends Fragment {
         String url = "https://corona.lmao.ninja/v3/covid-19/all";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
+                    @SuppressLint({"DefaultLocale", "SetTextI18n"})
                     @Override
                     public void onResponse(String response) {
                         try {
@@ -76,6 +80,15 @@ public class Home extends Fragment {
                             startCountAnimation(txt_confirmed, Integer.parseInt(cases));
                             startCountAnimation(txt_recovered, Integer.parseInt(recovered));
                             startCountAnimation(txt_deaths, Integer.parseInt(deaths));
+
+                            int rec = Integer.parseInt(recovered);
+                            int det = Integer.parseInt(deaths);
+                            int cas = Integer.parseInt(cases);
+                            progressBar.setMax(cas);
+                            progressBar.setProgress(cas-det);
+                            txt_cal_recovered.setText(matches(recovered));
+                            float deathsPer = (float) 100*det/cas;
+                            txt_percentage.setText(String.format("%.2f", 100-deathsPer )+ "%");
 
                         } catch (JSONException e) {
                             e.printStackTrace();

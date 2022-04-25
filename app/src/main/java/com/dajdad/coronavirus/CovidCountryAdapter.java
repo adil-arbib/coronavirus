@@ -1,6 +1,7 @@
 package com.dajdad.coronavirus;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +79,7 @@ public class CovidCountryAdapter extends RecyclerView.Adapter<CovidCountryAdapte
         animator.start();
     }
 
+    @SuppressLint("DefaultLocale")
     private static String formattingNumber(String number){
         long n = Long.parseLong(number);
         if(n/1000000 > 0)

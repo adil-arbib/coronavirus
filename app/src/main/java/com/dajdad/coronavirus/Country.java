@@ -88,7 +88,7 @@ public class Country extends Fragment implements recycelerViewInterface, View.On
                     using_array1 = false;
                 }
                 else{
-                    adapter = new CovidCountryAdapter(covidCountries, Country.this);
+                    adapter = new CovidCountryAdapter(boolean_byName? covidCountries:sortByCount(covidCountries), Country.this);
                     using_array1 = true;
                 }
                 recyclerView.setAdapter(adapter);
@@ -156,7 +156,12 @@ public class Country extends Fragment implements recycelerViewInterface, View.On
     @Override
     public void onItemClick(int position) {
         Intent intent = new Intent(getActivity(), CountryDetails.class);
-        putData(intent,using_array1 ? covidCountries : tmpArray, position);
+        if(boolean_byName){
+            putData(intent,using_array1 ? covidCountries : tmpArray, position);
+        }else {
+            putData(intent, using_array1 ? sortByCount(covidCountries):sortByCount(tmpArray), position);
+        }
+
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
