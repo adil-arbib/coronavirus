@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:fontFamily="sans-serif-light"
-        android:text="World"
+        android:text="@string/world"
         android:textColor="@color/black"
         android:textSize="40sp"
         android:textStyle="bold" />
@@ -53,7 +53,6 @@
                 android:id="@+id/txt_confirmed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
@@ -68,7 +67,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_gravity="center"
                 android:textStyle="bold"
-                android:text="Confirmed"/>
+                android:text="@string/confirmed"/>
 
         </LinearLayout>
 
@@ -104,7 +103,6 @@
                 android:id="@+id/txt_recovered"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:textStyle="bold"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center"
@@ -119,7 +117,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:textStyle="bold"
-                android:text="Recovered"/>
+                android:text="@string/recovered"/>
 
         </LinearLayout>
 
@@ -156,7 +154,6 @@
                 android:id="@+id/txt_deaths"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
@@ -171,7 +168,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="5dp"
                 android:textStyle="bold"
-                android:text="Deaths"/>
+                android:text="@string/deaths"/>
 
         </LinearLayout>
 
@@ -181,27 +178,26 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp">
         <TextView
             android:id="@+id/prgCases"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="37919813"
             android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/line"
+            app:layout_constraintRight_toRightOf="@+id/line"
             />
         <View
             android:id="@+id/line"
             android:layout_width="30dp"
             android:layout_height="2dp"
             android:background="@color/primary_blue"
-            app:layout_constraintStart_toEndOf="@+id/prgCases"
+            app:layout_constraintLeft_toRightOf="@+id/prgCases"
             app:layout_constraintTop_toTopOf="@+id/prgCases"
             app:layout_constraintBottom_toBottomOf="@+id/prgCases"
             android:layout_marginStart="5dp"
@@ -215,9 +211,9 @@
             android:textColor="@color/text_grey"
             android:textSize="15sp"
             app:layout_constraintTop_toBottomOf="@+id/prgCases"
-            app:layout_constraintEnd_toStartOf="@+id/line"
+            app:layout_constraintRight_toLeftOf="@+id/line"
             android:textStyle="bold"
-            android:text="89.23%"/>
+            />
         <ProgressBar
             android:id="@+id/progressBar"
             style="?android:attr/progressBarStyleHorizontal"
@@ -225,24 +221,24 @@
             android:layout_height="120dp"
             android:indeterminate="false"
             android:progressDrawable="@drawable/progress_bar"
-            app:layout_constraintStart_toEndOf="@+id/prgCases"
+            app:layout_constraintLeft_toRightOf="@+id/prgCases"
             android:layout_marginStart="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
             />
 
         <TextView
             android:id="@+id/txtCenter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Active"
+            android:text="@string/active"
             android:textSize="17sp"
             android:textColor="@color/black"
-            app:layout_constraintStart_toStartOf="@+id/progressBar"
+            app:layout_constraintLeft_toLeftOf="@+id/progressBar"
             app:layout_constraintTop_toTopOf="@+id/progressBar"
             app:layout_constraintBottom_toBottomOf="@+id/progressBar"
-            app:layout_constraintEnd_toEndOf="@+id/progressBar"
+            app:layout_constraintRight_toRightOf="@+id/progressBar"
             android:textStyle="bold"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

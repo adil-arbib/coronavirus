@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading">تحميل البيانات…</string>
+    <string name="corona_virus">فيروس كورونا</string>
+    <string name="connection_failed">تعذر الإتصال</string>
+    <string name="error_msg">المرجوا المحاولة مرة أخرى</string>
+    <string name="try_again">الإعادة</string>
+    <string name="exit">الحروج</string>
+    <string name="search_country">البحث عن دولة…</string>
+    <string name="world">العالم</string>
+    <string name="confirmed">الحالات</string>
+    <string name="recovered">المعافين</string>
+    <string name="deaths">الموتى</string>
+    <string name="active">نشيط</string>
+    <string name="last_update">اخر تحديث</string>
+    <string name="go_back">الرجوع</string>
+</resources>

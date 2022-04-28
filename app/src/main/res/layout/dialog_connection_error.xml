@@ -21,7 +21,7 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:textColor="@color/black"
-        android:text="Connection failed"/>
+        android:text="@string/connection_failed"/>
 
     <ImageView
         android:id="@+id/icon_wifi"
@@ -45,13 +45,13 @@
         android:textStyle="bold|italic"
         android:textSize="15sp"
         android:textColor="@color/black"
-        android:text="Please check your Internet connection "/>
+        android:text="@string/error_msg"/>
 
     <Button
         android:id="@+id/btn_try_again"
         android:layout_width="100dp"
         android:layout_height="35dp"
-        android:text="Try again"
+        android:text="@string/try_again"
         android:textSize="15sp"
         android:background="@drawable/icon_selected_bg"
         android:textColor="@color/white"
@@ -65,7 +65,7 @@
         android:id="@+id/btn_exit"
         android:layout_width="100dp"
         android:layout_height="35dp"
-        android:text="Exit"
+        android:text="@string/exit"
         android:textSize="15sp"
         android:background="@drawable/btn_exit"
         android:textColor="@color/white"

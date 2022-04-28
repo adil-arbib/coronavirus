@@ -24,7 +24,7 @@
         android:textColor="@color/primary_blue"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:text="Loading data..."/>
+        android:text="@string/loading"/>
 
 
 

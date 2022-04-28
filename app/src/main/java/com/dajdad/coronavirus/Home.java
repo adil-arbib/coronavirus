@@ -103,7 +103,6 @@ public class Home extends Fragment {
                 dialog.setTitle("Error");
                 dialog.setCancelable(false);
                 dialog.show();
-
             }
         });
         requestQueue.add(stringRequest);
@@ -138,20 +137,21 @@ public class Home extends Fragment {
 
 
     private String formatDate(long date){
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MM yyyy hh:mm:ss aaa");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MM yyyy hh:mm:ss aaa");
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date);
         return formatter.format(calendar.getTime());
     }
 
+    @SuppressLint("SetTextI18n")
     public void showToast(String date){
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.toast_layout,  toastLayout);
         TextView txt_update = view.findViewById(R.id.txt_update);
-        txt_update.setText("Last update : "+date);
+        txt_update.setText(getString(R.string.last_update)+" :"+date);
         Toast toast = new Toast(getContext());
         toast.setGravity(Gravity.TOP|Gravity.RIGHT, 0, 220);
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(view);
         toast.show();
     }
